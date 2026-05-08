@@ -19,7 +19,9 @@
                         <ButtonSmall class="clipboard" v-else @click="toggleTodoList">隐藏已完成事项</ButtonSmall>
                     </template>
 
-                    <ButtonSmall class="clipboard ml-2" :data-clipboard="diary.title">复制</ButtonSmall>
+                    <ButtonSmall class="clipboard ml-2" v-if="isShowExplode" @click="toggleContentType">普通</ButtonSmall>
+                    <ButtonSmall class="clipboard ml-2" v-else @click="toggleContentType">炸词</ButtonSmall>
+                    <ButtonSmall class="clipboard ml-2" :data-clipboard="`${diary.title}\n------------------------\n${diary.content}`">复制标题和内容</ButtonSmall>
                 </div>
             </div>
 
@@ -30,11 +32,6 @@
                 </div>
 
                 <div v-else>
-                    <div class="toolbar">
-                        <ButtonSmall class="clipboard" type="confirm" :data-clipboard="diary.content">全部复制</ButtonSmall>
-                        <ButtonSmall class="clipboard" v-if="isShowExplode" @click="toggleContentType">普通</ButtonSmall>
-                        <ButtonSmall class="clipboard" v-else @click="toggleContentType">炸词</ButtonSmall>
-                    </div>
                     <div v-if="isShowExplode">
                         <WordExplode v-if="diary.content" :content="diary.content"/>
                     </div>
