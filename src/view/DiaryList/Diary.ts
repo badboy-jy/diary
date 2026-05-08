@@ -74,8 +74,8 @@ export interface DiarySearchParams {
 }
 
 export interface DiarySearchParamsForCalendar extends DiarySearchParams {
-    dateStart: string, // date string, format: YYYY-MM-DD
-    dateEnd: string, // date string, format: YYYY-MM-DD
+    timeStart: string, // date string, format: YYYY-MM-DD
+    timeEnd: string, // date string, format: YYYY-MM-DD
 }
 
 export interface DiarySubmitEntity{

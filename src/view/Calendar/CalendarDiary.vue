@@ -133,8 +133,8 @@ const formSearch = ref<DiarySearchParamsForCalendar>({
     categories: '',
     filterShared: 0, // 1 是筛选，0 是不筛选
 
-    dateStart: Moment().startOf('year').format('YYYY-MM-DD'),  // 2025-01-01
-    dateEnd: Moment().endOf('year').format('YYYY-MM-DD')  // 2025-12-31
+    timeStart: Moment().startOf('year').format('YYYY-MM-DD'),
+    timeEnd: Moment().endOf('year').format('YYYY-MM-DD'),
 })
 const isLoading =  ref(false)
 
@@ -223,12 +223,10 @@ function getDiaryListOfDay(day: CalendarDay) {
     focusedDayDiaries.value = []  // 清空列表
     diaryApi
         .listAll({
-            dateStart: Moment(day.date).format('YYYY-MM-DD'),
-            dateEnd: Moment(day.date).format('YYYY-MM-DD'),
+            timeStart: Moment(day.date).startOf('day').format('YYYY-MM-DD HH:mm:ss'),
+            timeEnd: Moment(day.date).endOf('day').format('YYYY-MM-DD HH:mm:ss'), 
             keywords: JSON.stringify(projectStore.keywords),
             categories: JSON.stringify(projectStore.filteredCategories),
-            timeStart: projectStore.dateFilterTimeStart || undefined,
-            timeEnd: projectStore.dateFilterTimeEnd || undefined,
             filterShared: projectStore.isFilterShared ? 1 : 0,
         })
         .then(res => {
@@ -346,8 +344,8 @@ function onPageChange(data: any) {
 // 可选：根据当前日期范围更新搜索参数
 function updateDateRangeForSearch() {
     if (minDate.value && maxDate.value) {
-        formSearch.value.dateStart = Moment(minDate.value).format('YYYY-MM-DD')
-        formSearch.value.dateEnd = Moment(maxDate.value).format('YYYY-MM-DD')
+        formSearch.value.timeStart = Moment(minDate.value).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+        formSearch.value.timeEnd = Moment(maxDate.value).endOf('day').format('YYYY-MM-DD HH:mm:ss')
 
         // 可选择为新范围重新加载日记数据
         getAllShowingCalendarDiaries()
