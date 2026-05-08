@@ -129,7 +129,7 @@ const diaryList = ref<Array<EntityDiaryForm>>([])
 const formSearch = ref<DiarySearchParamsForCalendar>({
     keywords: '',
     pageNo: 1,
-    pageSize: 1000, // 单页请求条数
+    pageSize: 9999, // 单页请求条数
     categories: '',
     filterShared: 0, // 1 是筛选，0 是不筛选
 
@@ -144,8 +144,8 @@ function getAllShowingCalendarDiaries() {
     formSearch.value.keywords = JSON.stringify(projectStore.keywords)
     formSearch.value.categories = JSON.stringify(projectStore.filteredCategories)
     formSearch.value.filterShared = projectStore.isFilterShared ? 1 : 0
-    formSearch.value.timeStart = projectStore.dateFilterTimeStart || undefined
-    formSearch.value.timeEnd = projectStore.dateFilterTimeEnd || undefined
+    formSearch.value.timeStart = minDate.value ? Moment(minDate.value).startOf('day').format('YYYY-MM-DD HH:mm:ss') : ''
+    formSearch.value.timeEnd = maxDate.value ? Moment(maxDate.value).endOf('day').format('YYYY-MM-DD HH:mm:ss') : ''
     diaryList.value = []
 
     isLoading.value = true
@@ -302,8 +302,8 @@ const initPage = ref({
 })
 
 // 跟踪当前页面和日期范围
-const minDate = ref<Date>()
-const maxDate = ref<Date>()
+const minDate = ref<Date>(Moment().startOf('year').toDate())
+const maxDate = ref<Date>(Moment().endOf('year').toDate())
 
 // 处理日历页面滑动时的变化
 function onPageChange(data: any) {
