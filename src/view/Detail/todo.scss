@@ -3,12 +3,12 @@
 .todo-list{
   display: flex;
   flex-direction: column;
-  min-height: 200px;
 }
 
 .todo-add-trigger{
-  flex: 1;
-  min-height: 64px;
+  // 与单条 todo 高度一致，便于点击添加
+  height: 34px;
+  flex-shrink: 0;
   cursor: text;
   border-radius: 3px;
   &:hover{
@@ -116,7 +116,8 @@
     margin-right: 6px;
     flex-shrink: 0;
     .checkbox{
-      border-color: $color-border-bill;
+      // 未保存的新增项用主题橙色，更醒目
+      border-color: $orange;
     }
   }
   div.checkbox.add-checkbox{
@@ -196,7 +197,7 @@ div.checkbox.checked{
     padding-left: 10px;
   }
   .todo-add-trigger{
-    min-height: 48px;
+    height: 34px;
   }
 }
 

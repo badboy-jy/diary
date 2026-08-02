@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>tab /copy_unfinished_black</title>
+    <g id="tab-/copy_unfinished_black" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polyline id="Path" stroke="#4A4A4A" stroke-width="2" transform="translate(23.500000, 19.500000) scale(-1, 1) translate(-23.500000, -19.500000) " points="19 29 16 29 16 10 31 10 31 13"></polyline>
+        <rect id="Rectangle-Copy-2" stroke="#4A4A4A" stroke-width="2" transform="translate(16.500000, 25.500000) scale(-1, 1) translate(-16.500000, -25.500000) " x="9" y="16" width="15" height="19"></rect>
+        <text id="un" font-family="Galvji-Bold, Galvji" font-size="10" font-weight="bold" fill="#4A4A4A">
+            <tspan x="28" y="39">un</tspan>
+        </text>
+    </g>
+</svg>

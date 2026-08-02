@@ -78,10 +78,7 @@
 
         <div v-if="isEditable && isAddRowVisible" class="todo-add-row">
             <div class="checkbox-wrapper">
-                <div
-                    class="checkbox add-checkbox"
-                    :style="{'--todo-color': statisticStore.categoryObjectMap.get('todo')?.color}"
-                ></div>
+                <div class="checkbox add-checkbox"></div>
             </div>
             <!-- 与编辑态一致，用 contenteditable 支持长文本自动换行 -->
             <div

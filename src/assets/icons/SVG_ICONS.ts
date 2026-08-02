@@ -34,6 +34,11 @@ import tab_calendar_active from "./tab/calendar_active.svg?url"
 import tab_changelog from "./tab/changelog.svg?url"
 import tab_config from "./tab/config.svg?url"
 import tab_cog from "./tab/cog.svg?url"
+import tab_copy from "./tab/copy.svg?url"
+import tab_copy_all from "./tab/copy_all.svg?url"
+import tab_copy_unfinished from "./tab/copy_unfinished.svg?url"
+import tab_todo_all from "./tab/todo_all.svg?url"
+import tab_todo_unfinished from "./tab/todo_unfinished.svg?url"
 
 import tab_invitation_black from "./tab/invitation_black.svg?url"
 import tab_add_black from "./tab/add_black.svg?url"
@@ -68,6 +73,11 @@ import tab_changelog_black from "./tab/changelog_black.svg?url"
 import tab_calendar_black_active from "./tab/calendar_black_active.svg?url"
 import tab_config_black from "./tab/config_black.svg?url"
 import tab_cog_black from "./tab/cog_black.svg?url"
+import tab_copy_black from "./tab/copy_black.svg?url"
+import tab_copy_all_black from "./tab/copy_all_black.svg?url"
+import tab_copy_unfinished_black from "./tab/copy_unfinished_black.svg?url"
+import tab_todo_all_black from "./tab/todo_all_black.svg?url"
+import tab_todo_unfinished_black from "./tab/todo_unfinished_black.svg?url"
 
 
 // LOGO
@@ -205,6 +215,11 @@ export default {
         changeLog: tab_changelog,
         config: tab_config,
         cog: tab_cog,
+        copy: tab_copy,
+        copyAll: tab_copy_all,
+        copyUnfinished: tab_copy_unfinished,
+        todoAll: tab_todo_all,
+        todoUnfinished: tab_todo_unfinished,
     },
     tab_icons_black: {
         invitation: tab_invitation_black,
@@ -240,6 +255,11 @@ export default {
         changeLog: tab_changelog_black,
         config: tab_config_black,
         cog: tab_cog_black,
+        copy: tab_copy_black,
+        copyAll: tab_copy_all_black,
+        copyUnfinished: tab_copy_unfinished_black,
+        todoAll: tab_todo_all_black,
+        todoUnfinished: tab_todo_unfinished_black,
     },
     weather_icons: {
         cloudy: weather_cloudy,

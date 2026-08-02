@@ -20,11 +20,24 @@
                 >{{ projectStore.isHideContent ? diary.title.replace(/[^，。 \n]/g, '*') : diary.title }}</h2>
                 <div class="toolbar" v-if="!projectStore.isInMobileMode">
                     <template v-if="diary.category === 'todo'">
-                        <ButtonSmall v-if="hasHideAllCompletedTodoItems" @click="toggleTodoList">显示已完成事项</ButtonSmall>
-                        <ButtonSmall v-else @click="toggleTodoList">隐藏已完成事项</ButtonSmall>
-                        <ButtonSmall class="ml-2" @click="copyTitle">复制标题</ButtonSmall>
-                        <ButtonSmall class="ml-2" @click="copyTodosAll">复制全部</ButtonSmall>
-                        <ButtonSmall class="ml-2" @click="copyTodosUndone">复制未完成</ButtonSmall>
+                        <!-- 隐藏已完成时显示「全部」图标，用于切回显示全部 -->
+                        <TabIcon
+                            v-if="hasHideAllCompletedTodoItems"
+                            size="small"
+                            icon="黑色-待办-全部"
+                            title="显示已完成事项"
+                            @click="toggleTodoList"
+                        />
+                        <TabIcon
+                            v-else
+                            size="small"
+                            icon="黑色-待办-未完成"
+                            title="隐藏已完成事项"
+                            @click="toggleTodoList"
+                        />
+                        <TabIcon size="small" icon="黑色-复制" title="复制标题" @click="copyTitle"/>
+                        <TabIcon size="small" icon="黑色-复制全部" title="复制全部" @click="copyTodosAll"/>
+                        <TabIcon size="small" icon="黑色-复制未完成" title="复制未完成" @click="copyTodosUndone"/>
                     </template>
                     <template v-else>
                         <ButtonSmall v-if="isShowExplode" @click="toggleContentType">普通</ButtonSmall>
@@ -46,8 +59,8 @@
                 <!-- 非 todo：悬停显示复制内容；无标题 todo：在内容区提供复制 -->
                 <div class="toolbar" v-if="!projectStore.isInMobileMode && showContentCopyToolbar">
                     <template v-if="diary.category === 'todo'">
-                        <ButtonSmall @click.stop="copyTodosAll">复制全部</ButtonSmall>
-                        <ButtonSmall @click.stop="copyTodosUndone">复制未完成</ButtonSmall>
+                        <TabIcon size="small" icon="黑色-复制全部" title="复制全部" @click.stop="copyTodosAll"/>
+                        <TabIcon size="small" icon="黑色-复制未完成" title="复制未完成" @click.stop="copyTodosUndone"/>
                     </template>
                     <ButtonSmall v-else @click.stop="copyContent">复制内容</ButtonSmall>
                 </div>
@@ -91,6 +104,7 @@ import ToDo from "./ToDo.vue";
 import {EntityDiaryFromServer} from "@/view/DiaryList/Diary.ts";
 import {LunarDateEntity} from "@/entity/LunarDate.ts";
 import ButtonSmall from "@/components/ButtonSmall.vue";
+import TabIcon from "@/components/TabIcon.vue";
 
 import {popMessage, dateProcess, temperatureProcessSTC} from "@/utility.ts";
 

@@ -1,12 +1,15 @@
 <template>
-    <div :class="[
+    <div
+        :class="[
             'icon-btn',
             {wide: props.icon === 'LOGO'},
             {small: props.size === 'small'},
             {black: props.icon && props.icon.indexOf('黑色') > -1}
-        ]">
-        <img :alt="props.icon"
-             :title="props.icon"
+        ]"
+        :title="tooltip"
+    >
+        <img :alt="tooltip"
+             :title="tooltip"
              :src="iconMap.get(props.icon)">
     </div>
 </template>
@@ -38,6 +41,8 @@ const props = withDefaults(defineProps<{
         | '文件'
         | '待办'
         | '待办-显示'
+        | '待办-全部'
+        | '待办-未完成'
         | '内容隐藏'
         | '内容显示'
         | '日历'
@@ -62,6 +67,8 @@ const props = withDefaults(defineProps<{
         | '黑色-文件'
         | '黑色-待办'
         | '黑色-待办-显示'
+        | '黑色-待办-全部'
+        | '黑色-待办-未完成'
         | '黑色-内容隐藏'
         | '黑色-内容显示'
         | '黑色-日历'
@@ -69,11 +76,22 @@ const props = withDefaults(defineProps<{
         | '黑色-列表详情'
         | '黑色-列表瀑布'
         | '黑色-日历-选中'
-        | '黑色-复制',
-    size?: '' | 'small'
+        | '复制'
+        | '复制全部'
+        | '复制未完成'
+        | '黑色-复制'
+        | '黑色-复制全部'
+        | '黑色-复制未完成',
+    size?: '' | 'small',
+    // 悬停提示，优先于 icon 名称
+    title?: string
 }>(), {
-    size: ''
+    size: '',
+    title: ''
 })
+
+// 悬停显示功能名称
+const tooltip = computed(() => props.title || props.icon)
 
 const iconMap = computed(() => {
     let iconMap = new Map()
@@ -98,6 +116,8 @@ const iconMap = computed(() => {
     iconMap.set('文件', ICONS.tab_icons.folder)
     iconMap.set('待办', ICONS.tab_icons.todo)
     iconMap.set('待办-显示', ICONS.tab_icons.todoActive)
+    iconMap.set('待办-全部', ICONS.tab_icons.todoAll)
+    iconMap.set('待办-未完成', ICONS.tab_icons.todoUnfinished)
     iconMap.set('内容隐藏', ICONS.tab_icons.contentHide)
     iconMap.set('内容显示', ICONS.tab_icons.contentShow)
     iconMap.set('日历', ICONS.tab_icons.calendar)
@@ -106,6 +126,9 @@ const iconMap = computed(() => {
     iconMap.set('列表详情', ICONS.tab_icons.listDetail)
     iconMap.set('列表瀑布', ICONS.tab_icons.listWaterfall)
     iconMap.set('类别', ICONS.tab_icons.category)
+    iconMap.set('复制', ICONS.tab_icons.copy)
+    iconMap.set('复制全部', ICONS.tab_icons.copyAll)
+    iconMap.set('复制未完成', ICONS.tab_icons.copyUnfinished)
 
     iconMap.set('黑色-添加', ICONS.tab_icons_black.add)
     iconMap.set('黑色-确定', ICONS.tab_icons_black.done)
@@ -124,6 +147,8 @@ const iconMap = computed(() => {
     iconMap.set('黑色-文件', ICONS.tab_icons_black.folder)
     iconMap.set('黑色-待办', ICONS.tab_icons_black.todo)
     iconMap.set('黑色-待办-显示', ICONS.tab_icons_black.todoActive)
+    iconMap.set('黑色-待办-全部', ICONS.tab_icons_black.todoAll)
+    iconMap.set('黑色-待办-未完成', ICONS.tab_icons_black.todoUnfinished)
     iconMap.set('黑色-内容隐藏', ICONS.tab_icons_black.contentHide)
     iconMap.set('黑色-内容显示', ICONS.tab_icons_black.contentShow)
     iconMap.set('黑色-日历', ICONS.tab_icons_black.calendar)
@@ -132,7 +157,9 @@ const iconMap = computed(() => {
     iconMap.set('黑色-列表瀑布', ICONS.tab_icons_black.listWaterfall)
     iconMap.set('黑色-日历-选中', ICONS.tab_icons_black.calendar_active)
     iconMap.set('黑色-类别', ICONS.tab_icons_black.category)
-    iconMap.set('黑色-复制', ICONS.clipboard)
+    iconMap.set('黑色-复制', ICONS.tab_icons_black.copy)
+    iconMap.set('黑色-复制全部', ICONS.tab_icons_black.copyAll)
+    iconMap.set('黑色-复制未完成', ICONS.tab_icons_black.copyUnfinished)
     return iconMap
 })
 </script>

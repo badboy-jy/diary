@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>tab /todo_all</title>
+    <g id="tab-/todo_all" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy-2" stroke="#E5E5EA" stroke-width="2" transform="translate(23.500000, 21.500000) scale(-1, 1) translate(-23.500000, -21.500000) " x="11" y="9" width="25" height="25"></rect>
+        <rect id="Rectangle-Copy-2" stroke="#E5E5EA" stroke-width="2" transform="translate(18.500000, 16.500000) scale(-1, 1) translate(-18.500000, -16.500000) " x="16" y="14" width="5" height="5"></rect>
+        <polyline id="Path-10" stroke="#49C75F" stroke-width="2" points="15.4894615 24.8448748 17.7285062 27.0839195 21.7285062 23.0839195"></polyline>
+        <line x1="24.5" y1="16.5" x2="31.5" y2="16.5" id="Line-4" stroke="#E5E5EA" stroke-width="2" stroke-linecap="square"></line>
+        <line x1="24.5" y1="26.5" x2="31.5" y2="26.5" id="Line-4-Copy" stroke="#49C75F" stroke-width="2" stroke-linecap="square"></line>
+    </g>
+</svg>
