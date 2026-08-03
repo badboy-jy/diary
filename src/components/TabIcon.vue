@@ -215,15 +215,15 @@ $icon-padding-mobile: 3px;
     }
 
     &.black{
-        //background-color: darken(white, 60%);
+        // 浅色底上用浅灰背景，悬停才有可见反馈
         &:hover{
             img{
-                background-color: color.adjust(white, $lightness: 0%);
+                background-color: $bg-light;
             }
         }
         &:active{
             img{
-                background-color: color.adjust(white, $lightness: 5%);
+                background-color: $bg-light-td;
             }
         }
     }
@@ -247,6 +247,18 @@ $icon-padding-mobile: 3px;
         &:active{
             img{
                 background-color: color.adjust($dark-bg, $lightness: 6%);
+            }
+        }
+        &.black{
+            &:hover{
+                img{
+                    background-color: color.adjust($dark-bg, $lightness: 8%);
+                }
+            }
+            &:active{
+                img{
+                    background-color: color.adjust($dark-bg, $lightness: 12%);
+                }
             }
         }
     }

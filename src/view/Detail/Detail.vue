@@ -20,18 +20,18 @@
                 >{{ projectStore.isHideContent ? diary.title.replace(/[^，。 \n]/g, '*') : diary.title }}</h2>
                 <div class="toolbar" v-if="!projectStore.isInMobileMode">
                     <template v-if="diary.category === 'todo'">
-                        <!-- 隐藏已完成时显示「全部」图标，用于切回显示全部 -->
+                        <!-- 图标表示当前筛选状态：隐藏已完成 → 未完成；显示全部 → 全部 -->
                         <TabIcon
                             v-if="hasHideAllCompletedTodoItems"
                             size="small"
-                            icon="黑色-待办-全部"
+                            icon="黑色-待办-未完成"
                             title="显示已完成事项"
                             @click="toggleTodoList"
                         />
                         <TabIcon
                             v-else
                             size="small"
-                            icon="黑色-待办-未完成"
+                            icon="黑色-待办-全部"
                             title="隐藏已完成事项"
                             @click="toggleTodoList"
                         />
