@@ -24,7 +24,7 @@
                 <div class="minute-list">
                     <div class="minute-list-item" :class="{active: minute === item}"
                          :style="{width: props.minuteSimple ? '100%' : '10%'}"
-                         @click="minute = item"
+                         @click="onMinuteClick(item)"
                          v-for="item in minutes" :key="item">
                         <div class="label">{{ String(item).padStart(2, '0') }}</div>
                     </div>
@@ -49,6 +49,10 @@ const props = withDefaults(defineProps<{
 })
 
 const modelValue = defineModel<Date>({required: true})
+const emit = defineEmits<{
+    // 用户点选分钟后通知父级（用于关闭日期面板）
+    minuteSelect: [minute: number]
+}>()
 
 const hour = ref(0)
 const minute = ref(0)
@@ -70,6 +74,12 @@ watch(hour, (newValue) => {
 watch(minute, (newValue) => {
     modelValue.value = new Date(modelValue.value?.getFullYear() || 0, modelValue.value?.getMonth() || 0, modelValue.value?.getDate() || 0, hour.value, newValue)
 })
+
+// 点选分钟：更新值并通知父级关闭面板
+function onMinuteClick(item: number) {
+    minute.value = item
+    emit('minuteSelect', item)
+}
 </script>
 
 

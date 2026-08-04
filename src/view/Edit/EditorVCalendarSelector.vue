@@ -4,31 +4,43 @@
             <div class="button-date-change" @click="dateMove(-1)">
                 <div>&lt;</div>
             </div>
-            <DatePicker
-                locale="zh"
-                v-model="modelDate"
-                mode="date"
-                is24hr
-                hide-time-header
-                :attributes="attrs"
-                :popover="popoverOptions"
+            <!-- 用 Calendar + VDropdown 自控开关，避免 DatePicker 选日强制关面板导致闪烁 -->
+            <VDropdown
+                class="date-picker-dropdown"
+                popper-class="edit-date-picker-popper"
+                placement="bottom"
+                :distance="10"
+                v-model:shown="isPanelOpen"
             >
-                <template #default="{ togglePopover }">
-                    <div class="datetime" @click="() => togglePopover()">
-                        <div class="date">{{dateFormatter(modelDate, 'yyyy.MM.dd')}}</div>
-                        <div class="time">{{dateFormatter(modelDate, 'hh:mm')}}</div>
+                <div class="datetime">
+                    <div class="date">{{dateFormatter(modelDate, 'yyyy.MM.dd')}}</div>
+                    <div class="time">{{dateFormatter(modelDate, 'hh:mm')}}</div>
+                </div>
+                <template #popper="{ hide }">
+                    <!-- 外观对齐原 DatePicker 弹层：无双边框，footer 在日历内 -->
+                    <div class="edit-date-picker-panel">
+                        <Calendar
+                            borderless
+                            locale="zh"
+                            :attributes="attrs"
+                            :first-day-of-week="1"
+                            title-position="center"
+                            @dayclick="onDayClick"
+                        >
+                            <template #footer>
+                                <div class="p-2 pt-0">
+                                    <ButtonSmall @click="moveToday" class="mb-1">此时此刻</ButtonSmall>
+                                    <TimePicker
+                                        v-model="modelDate"
+                                        :minute-simple="false"
+                                        orientation="vertical"
+                                        @minute-select="hide()"/>
+                                </div>
+                            </template>
+                        </Calendar>
                     </div>
                 </template>
-                <template #footer>
-                    <div class="p-2 pt-0">
-                        <ButtonSmall @click="moveToday" class="mb-1">今天</ButtonSmall>
-                        <TimePicker
-                            v-model="modelDate"
-                            :minute-simple="false"
-                            orientation="vertical"/>
-                    </div>
-                </template>
-            </DatePicker>
+            </VDropdown>
 
             <div class="button-date-change" @click="dateMove(1)">
                 <div>&gt;</div>
@@ -45,13 +57,12 @@
 <script lang="ts" setup>
 import calendar from "js-calendar-converter" // 农历数据
 import Moment from "moment/moment";
-import { onMounted, ref, watch} from "vue";
+import { computed, onMounted, ref, watch} from "vue";
 import {LunarDateEntity} from "@/entity/LunarDate.ts";
 
-import {DatePicker} from 'v-calendar';
+import {Calendar} from 'v-calendar';
 import 'v-calendar/style.css';
 import {dateFormatter} from "@/utility.ts";
-import type {PopoverOptions} from "v-calendar";
 import ButtonSmall from "@/components/ButtonSmall.vue";
 import TimePicker from "@/view/Edit/TimePicker.vue";
 
@@ -60,6 +71,7 @@ const modelDate = defineModel<Date>({ // v-model value
     required: true
 })
 
+const isPanelOpen = ref(false)
 
 // 显示时获取当前时间的农历值
 onMounted(()=>{
@@ -74,24 +86,36 @@ onMounted(()=>{
  *  Calendar option
  */
 const lunarObject = ref<LunarDateEntity>({})
-const popoverOptions = ref<PopoverOptions>({
-    visibility: 'click', // When the popover appears
-    placement: 'bottom', // Where the popover appears
-    autoHide: true, // Auto-hide popover based on visibility
-    showDelay: 0, // Delay (ms) before popover is shown
-    hideDelay: 0, // Delay (ms) before popover is hidden
-})
-const attrs = ref([
+// 今天圆点 + 当前选中高亮
+const attrs = computed(() => [
     {
         key: 'today',
-        // highlight: true,
-        dot: true, // 点状
+        dot: true,
         dates: new Date(),
+    },
+    {
+        key: 'selected',
+        highlight: true,
+        dates: modelDate.value,
     },
 ])
 
+// 点选日期：只改年月日，保留时分，面板不关
+function onDayClick(day: { date: Date }) {
+    const prev = modelDate.value
+    modelDate.value = new Date(
+        day.date.getFullYear(),
+        day.date.getMonth(),
+        day.date.getDate(),
+        prev.getHours(),
+        prev.getMinutes(),
+        prev.getSeconds(),
+        prev.getMilliseconds(),
+    )
+}
+
 function moveToday() {
-    // refCalendar.value.move(new Date())
+    // 设为此时此刻
     modelDate.value = new Date()
 }
 
@@ -196,6 +220,50 @@ $height: 40px;
     }
 }
 
+// 触发区占满中间宽度，与原先 DatePicker 一致
+.date-picker-dropdown.v-popper{
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+// 去掉 floating-vue 默认边框阴影，交给面板自身
+.edit-date-picker-popper{
+    .v-popper__inner{
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        overflow: visible;
+    }
+    .v-popper__arrow-container{
+        display: none;
+    }
+}
+
+// 对齐原 .vc-popover-content.vc-date-picker-content 外观
+.edit-date-picker-panel{
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    overflow: hidden;
+    .vc-container{
+        border: 0 !important;
+        background-color: transparent !important;
+    }
+}
+
+// 日历弹窗固定宽度
+.edit-date-picker-panel{
+    width: 300px;
+    .vc-container{
+        width: 100% !important;
+    }
+}
+
 .date-set-item{
     padding: 0 5px;
     box-sizing: content-box;
@@ -295,6 +363,10 @@ $height: 40px;
         .time{
             color: $dark-text-subtitle;
         }
+    }
+    .edit-date-picker-panel{
+        background-color: $dark-bg;
+        border-color: $dark-border;
     }
     .date-set-item{
         .button-date-change{
