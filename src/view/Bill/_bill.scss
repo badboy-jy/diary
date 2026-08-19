@@ -337,6 +337,7 @@
     border-color: $dark-border;
     background-color: $dark-bg-dark;
     .bill-header{
+      border-bottom-color: $dark-border;
       .title{
         color: $dark-text-title;
       }
