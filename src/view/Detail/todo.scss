@@ -189,8 +189,11 @@ div.checkbox.checked{
 @media (max-width: $grid-separate-width-sm) {
   .todo-list-item{
     padding-left: 10px;
+    // 短滑动手势留给页面滚动，长按后才由 Sortable 接管拖动
+    touch-action: pan-y;
     .item-actions{
-      opacity: 1;
+      // 移动端不显示 todo item 右侧操作按钮
+      display: none;
     }
   }
   .todo-add-row{

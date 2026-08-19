@@ -2,10 +2,9 @@
 <svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>tab /copy_all_black</title>
     <g id="tab-/copy_all_black" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <polyline id="Path" stroke="#4A4A4A" stroke-width="2" transform="translate(23.500000, 19.500000) scale(-1, 1) translate(-23.500000, -19.500000) " points="19 29 16 29 16 10 31 10 31 13"></polyline>
-        <rect id="Rectangle-Copy-2" stroke="#4A4A4A" stroke-width="2" transform="translate(16.500000, 25.500000) scale(-1, 1) translate(-16.500000, -25.500000) " x="9" y="16" width="15" height="19"></rect>
-        <text id="all" font-family="Galvji-Bold, Galvji" font-size="10" font-weight="bold" fill="#4A4A4A">
-            <tspan x="28" y="39">all</tspan>
+        <text id="A" font-family="Galvji-Bold, Galvji" font-size="13" font-weight="bold" fill="#4CD964">
+            <tspan x="14.7392578" y="30">A</tspan>
         </text>
+        <path d="M28,16 L28,35 L11,35 L11,16 L28,16 Z M26,18 L13,18 L13,33 L26,33 L26,18 Z M35,10 L35,29 L31,29 L31,27 L33,27 L33,12 L20,12 L20,13.6842105 L18,13.6842105 L18,10 L35,10 Z" id="Combined-Shape" fill="#4A4A4A" fill-rule="nonzero"></path>
     </g>
 </svg>

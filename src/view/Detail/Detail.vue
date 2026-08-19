@@ -14,9 +14,7 @@
             <div class="diary-title" v-if="diary.title">
                 <h2
                     :class="{'mobile-copyable': projectStore.isInMobileMode}"
-                    @touchend="onTitleMobileGesture($event)"
-                    @click="onTitleMobileGesture($event)"
-                    @dblclick="onMobileDblClick(copyTitle)"
+                    @touchend="onTitleMobileDoubleTapEnd($event)"
                 >{{ projectStore.isHideContent ? diary.title.replace(/[^，。 \n]/g, '*') : diary.title }}</h2>
                 <div class="toolbar" v-if="!projectStore.isInMobileMode">
                     <template v-if="diary.category === 'todo'">
@@ -24,25 +22,23 @@
                         <TabIcon
                             v-if="hasHideAllCompletedTodoItems"
                             size="small"
-                            icon="黑色-待办-未完成"
+                            :icon="toolbarIcon('待办-未完成')"
                             title="显示已完成事项"
                             @click="toggleTodoList"
                         />
                         <TabIcon
                             v-else
                             size="small"
-                            icon="黑色-待办-全部"
+                            :icon="toolbarIcon('待办-全部')"
                             title="隐藏已完成事项"
                             @click="toggleTodoList"
                         />
-                        <TabIcon size="small" icon="黑色-复制" title="复制标题" @click="copyTitle"/>
-                        <TabIcon size="small" icon="黑色-复制全部" title="复制全部" @click="copyTodosAll"/>
-                        <TabIcon size="small" icon="黑色-复制未完成" title="复制未完成" @click="copyTodosUndone"/>
+                        <TabIcon size="small" :icon="toolbarIcon('复制')" title="复制标题" @click="copyTitle"/>
+                        <TabIcon size="small" :icon="toolbarIcon('复制全部')" title="复制全部" @click="copyTodosAll"/>
+                        <TabIcon size="small" :icon="toolbarIcon('复制未完成')" title="复制未完成" @click="copyTodosUndone"/>
                     </template>
                     <template v-else>
-                        <ButtonSmall v-if="isShowExplode" @click="toggleContentType">普通</ButtonSmall>
-                        <ButtonSmall v-else @click="toggleContentType">炸词</ButtonSmall>
-                        <ButtonSmall class="ml-2" @click="copyTitle">复制标题</ButtonSmall>
+                        <TabIcon size="small" :icon="toolbarIcon('复制')" title="复制标题" @click="copyTitle"/>
                     </template>
                 </div>
             </div>
@@ -50,19 +46,17 @@
             <!--CONTENT-->
             <div
                 class="diary-content"
-                :class="{'mobile-copyable': projectStore.isInMobileMode}"
+                :class="{'mobile-copyable': projectStore.isInMobileMode && diary.category !== 'todo'}"
                 v-if="diary.category === 'todo' || diary.content"
-                @touchend="onContentMobileGesture($event)"
-                @click="onContentMobileGesture($event)"
-                @dblclick="onMobileDblClick(copyContentOrTodosAll)"
+                @touchend="onContentMobileDoubleTapEnd($event)"
             >
                 <!-- 非 todo：悬停显示复制内容；无标题 todo：在内容区提供复制 -->
                 <div class="toolbar" v-if="!projectStore.isInMobileMode && showContentCopyToolbar">
                     <template v-if="diary.category === 'todo'">
-                        <TabIcon size="small" icon="黑色-复制全部" title="复制全部" @click.stop="copyTodosAll"/>
-                        <TabIcon size="small" icon="黑色-复制未完成" title="复制未完成" @click.stop="copyTodosUndone"/>
+                        <TabIcon size="small" :icon="toolbarIcon('复制全部')" title="复制全部" @click.stop="copyTodosAll"/>
+                        <TabIcon size="small" :icon="toolbarIcon('复制未完成')" title="复制未完成" @click.stop="copyTodosUndone"/>
                     </template>
-                    <ButtonSmall v-else @click.stop="copyContent">复制内容</ButtonSmall>
+                    <TabIcon v-else size="small" :icon="toolbarIcon('复制')" title="复制内容" @click.stop="copyContent"/>
                 </div>
 
                 <!-- todo 类别 -->
@@ -77,15 +71,8 @@
 
                 <!-- 其他类别 -->
                 <div v-else>
-                    <div v-if="isShowExplode">
-                        <WordExplode v-if="diary.content" :content="diary.content"/>
-                    </div>
-
-                    <div v-else>
-                        <div v-if="diary.is_markdown === 1 && !projectStore.isHideContent" class="markdown" v-html="contentMarkDownHtml"/>
-                        <div v-else class="content" v-html="getContentHtml(diary.content)"/>
-                    </div>
-
+                    <div v-if="diary.is_markdown === 1 && !projectStore.isHideContent" class="markdown" v-html="contentMarkDownHtml"/>
+                    <div v-else class="content" v-html="getContentHtml(diary.content)"/>
                 </div>
             </div>
 
@@ -99,11 +86,9 @@ import {buildDiaryContentHtml, parseMarkdown} from "@/utility/markedHighlight.ts
 import calendar from "js-calendar-converter";
 import Moment from "moment";
 import DetailHeader from "@/view/Detail/DetailHeader.vue";
-import WordExplode from "@/view/Detail/WordExplode.vue";
 import ToDo from "./ToDo.vue";
 import {EntityDiaryFromServer} from "@/view/DiaryList/Diary.ts";
 import {LunarDateEntity} from "@/entity/LunarDate.ts";
-import ButtonSmall from "@/components/ButtonSmall.vue";
 import TabIcon from "@/components/TabIcon.vue";
 
 import {popMessage, dateProcess, temperatureProcessSTC} from "@/utility.ts";
@@ -114,7 +99,7 @@ import {useUserConfigStore} from "@/pinia/useUserConfigStore.ts";
 
 const projectStore = useProjectStore();
 const userConfigStore = useUserConfigStore();
-import {computed, onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 const router = useRouter()
 const route = useRoute()
@@ -123,7 +108,6 @@ const route = useRoute()
 const isLoading = ref(false) // loading
 const diary = ref<EntityDiaryFromServer>({})
 const lunarObject = ref<LunarDateEntity>({})
-const isShowExplode = ref(false) // 是否显示炸词
 const hasHideAllCompletedTodoItems = ref(false) // 是否隐藏所有已完成事项
 
 // 无标题时内容区提供复制；有标题的 todo 复制放在标题工具栏
@@ -140,12 +124,6 @@ onMounted(async ()=>{
     // 初始化时，载入第一次点击的 id 内容
     if (route.params.id){
         showDiary(Number(route.params.id))
-    }
-})
-
-onUnmounted(()=>{
-    if (multiTapTimer) {
-        clearTimeout(multiTapTimer)
     }
 })
 
@@ -176,110 +154,73 @@ async function toggleTodoList(){
     }
 }
 
-function toggleContentType(){
-    isShowExplode.value = !isShowExplode.value
+// 浅色底用黑色图标，暗黑模式用白色图标
+type ToolbarIconName =
+    | '复制' | '复制全部' | '复制未完成'
+    | '待办-全部' | '待办-未完成'
+function toolbarIcon(name: ToolbarIconName) {
+    return projectStore.isDarkMode ? name : `黑色-${name}`
 }
 
+// 移动端双击复制判定阈值
+const MOBILE_DOUBLE_TAP_MS = 300
+const MOBILE_DOUBLE_TAP_MOVE_PX = 24
+let lastTitleTapAt = 0
+let lastContentTapAt = 0
+let lastTitleTapPoint = { x: 0, y: 0 }
+let lastContentTapPoint = { x: 0, y: 0 }
 
-// 移动端多击复制（双击 / 三击）
-const mobileTapState = { time: 0, key: '', count: 0 }
-let multiTapTimer: ReturnType<typeof setTimeout> | undefined
-const MOBILE_MULTI_TAP_MS = 500
-const MOBILE_TRIPLE_WAIT_MS = 280
-
-/**
- * 判断是否是触摸设备
- * @returns 是否是触摸设备
- */
-function isTouchDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+// 触摸目标在待办交互区域时不触发正文区长按复制
+function shouldIgnoreMobileLongPress(event: Event) {
+    const target = event.target as HTMLElement | null
+    if (!target) return true
+    return !!target.closest('.todo-list, .checkbox, .item-actions, .todo-add-row, .todo-add-trigger, [contenteditable="true"]')
 }
 
-/**
- * 移动端双击 / 可选三击复制
- * @param key 手势区域标识
- * @param onDouble 双击回调
- * @param event 事件
- * @param onTriple 三击回调（仅标题+todo 用于复制未完成）
- */
-function onMobileCopyGesture(
-    key: string,
-    onDouble: () => void,
-    event: Event,
-    onTriple?: () => void
+// 检测两次触摸是否可视为双击
+function isMobileDoubleTap(
+    currentAt: number,
+    lastAt: number,
+    currentPoint: { x: number; y: number },
+    lastPoint: { x: number; y: number },
 ) {
+    const deltaAt = currentAt - lastAt
+    const deltaMove = Math.hypot(currentPoint.x - lastPoint.x, currentPoint.y - lastPoint.y)
+    return deltaAt > 0 && deltaAt <= MOBILE_DOUBLE_TAP_MS && deltaMove <= MOBILE_DOUBLE_TAP_MOVE_PX
+}
+
+// 标题双击复制标题
+function onTitleMobileDoubleTapEnd(event: TouchEvent) {
     if (!projectStore.isInMobileMode) return
-    // 触摸设备上忽略 touchend 之后合成的 click，避免单次点击被误判为双击
-    if (isTouchDevice() && event.type === 'click') return
-
+    const touch = event.changedTouches[0]
+    if (!touch) return
     const now = Date.now()
-    if (now - mobileTapState.time < MOBILE_MULTI_TAP_MS && mobileTapState.key === key) {
-        mobileTapState.count += 1
-    } else {
-        mobileTapState.count = 1
-    }
-    mobileTapState.time = now
-    mobileTapState.key = key
-
-    if (event.type === 'touchend' && mobileTapState.count >= 2) {
-        event.preventDefault()
-    }
-
-    if (multiTapTimer) {
-        clearTimeout(multiTapTimer)
-        multiTapTimer = undefined
-    }
-
-    // 三击：复制未完成
-    if (onTriple && mobileTapState.count >= 3) {
-        mobileTapState.count = 0
-        mobileTapState.time = 0
-        onTriple()
+    const point = { x: touch.clientX, y: touch.clientY }
+    if (isMobileDoubleTap(now, lastTitleTapAt, point, lastTitleTapPoint)) {
+        copyTitle()
+        lastTitleTapAt = 0
         return
     }
-
-    // 双击：若支持三击则短暂等待，否则立即复制
-    if (mobileTapState.count === 2) {
-        if (onTriple) {
-            multiTapTimer = setTimeout(() => {
-                mobileTapState.count = 0
-                mobileTapState.time = 0
-                multiTapTimer = undefined
-                onDouble()
-            }, MOBILE_TRIPLE_WAIT_MS)
-        } else {
-            mobileTapState.count = 0
-            mobileTapState.time = 0
-            onDouble()
-        }
-    }
+    lastTitleTapAt = now
+    lastTitleTapPoint = point
 }
 
-// 标题区移动端手势：双击复制标题，todo 三击复制未完成
-function onTitleMobileGesture(event: Event) {
-    onMobileCopyGesture(
-        'title',
-        copyTitle,
-        event,
-        diary.value.category === 'todo' ? copyTodosUndone : undefined
-    )
-}
-
-// 正文区移动端手势：双击复制内容或全部待办
-function onContentMobileGesture(event: Event) {
-    onMobileCopyGesture('content', copyContentOrTodosAll, event)
-}
-
-function onMobileDblClick(copyFn: () => void) {
+// 正文双击复制（todo 类别不触发，避免与拖动/行内操作冲突）
+function onContentMobileDoubleTapEnd(event: TouchEvent) {
     if (!projectStore.isInMobileMode) return
-    if (multiTapTimer) {
-        clearTimeout(multiTapTimer)
-        multiTapTimer = undefined
+    if (diary.value.category === 'todo') return
+    if (shouldIgnoreMobileLongPress(event)) return
+    const touch = event.changedTouches[0]
+    if (!touch) return
+    const now = Date.now()
+    const point = { x: touch.clientX, y: touch.clientY }
+    if (isMobileDoubleTap(now, lastContentTapAt, point, lastContentTapPoint)) {
+        copyContentOrTodosAll()
+        lastContentTapAt = 0
+        return
     }
-    mobileTapState.time = 0
-    mobileTapState.key = ''
-    mobileTapState.count = 0
-    copyFn()
+    lastContentTapAt = now
+    lastContentTapPoint = point
 }
 
 /**

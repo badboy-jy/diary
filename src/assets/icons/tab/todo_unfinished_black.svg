@@ -2,8 +2,8 @@
 <svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>tab /todo_unfinished_black</title>
     <g id="tab-/todo_unfinished_black" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle-Copy-2" stroke="#4A4A4A" stroke-width="2" transform="translate(23.500000, 21.500000) scale(-1, 1) translate(-23.500000, -21.500000) " x="11" y="9" width="25" height="25"></rect>
-        <rect id="Rectangle-Copy-2" stroke="#4A4A4A" stroke-width="2" transform="translate(18.500000, 16.500000) scale(-1, 1) translate(-18.500000, -16.500000) " x="16" y="14" width="5" height="5"></rect>
-        <line x1="24.5" y1="16.5" x2="31.5" y2="16.5" id="Line-4" stroke="#4A4A4A" stroke-width="2" stroke-linecap="square"></line>
+        <path d="M36,9 L9,9 L9,36 L36,36 L36,9 Z M34,11 L34,34 L11,34 L11,11 L34,11 Z" id="Rectangle-Copy-2" fill="#4A4A4A" fill-rule="nonzero" transform="translate(22.500000, 22.500000) scale(-1, 1) translate(-22.500000, -22.500000) "></path>
+        <path d="M17.5,15 C15.5670034,15 14,16.5670034 14,18.5 C14,20.4329966 15.5670034,22 17.5,22 C19.4329966,22 21,20.4329966 21,18.5 C21,16.5670034 19.4329966,15 17.5,15 Z M17.5,17 C18.3284271,17 19,17.6715729 19,18.5 C19,19.3284271 18.3284271,20 17.5,20 C16.6715729,20 16,19.3284271 16,18.5 C16,17.6715729 16.6715729,17 17.5,17 Z" id="Rectangle-Copy-2" fill="#4A4A4A" fill-rule="nonzero" transform="translate(17.500000, 18.500000) scale(-1, 1) translate(-17.500000, -18.500000) "></path>
+        <polygon id="Line-4" fill="#4A4A4A" fill-rule="nonzero" points="31 17.5 31 19.5 24 19.5 24 17.5"></polygon>
     </g>
 </svg>

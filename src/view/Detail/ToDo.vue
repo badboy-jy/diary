@@ -5,6 +5,9 @@
             item-key="id"
             @end="onDragEnd"
             :disabled="!isEditable || editingItemId !== null"
+            :delay="500"
+            :delay-on-touch-only="true"
+            :touch-start-threshold="10"
         >
             <template #item="{ element: item }">
                 <div :class="['todo-list-item', {done: item.isDone, editing: isItemEditing(item)}]">
@@ -45,21 +48,21 @@
                     <div v-if="isEditable" class="item-actions">
                         <TabIcon
                             size="small"
-                            icon="黑色-复制"
+                            :icon="actionIcon('复制')"
                             title="复制"
                             @mousedown.prevent
                             @click="copyTodo(item)"
                         />
                         <TabIcon
                             size="small"
-                            icon="黑色-编辑"
+                            :icon="actionIcon('编辑')"
                             :title="isItemEditing(item) ? '完成' : '编辑'"
                             @mousedown.prevent
                             @click="toggleItemEdit(item)"
                         />
                         <TabIcon
                             size="small"
-                            icon="黑色-删除"
+                            :icon="actionIcon('删除')"
                             title="删除"
                             @mousedown.prevent
                             @click="deleteTodo(item.id)"
@@ -92,7 +95,7 @@
                 @blur="handleAddInputBlur"
             ></div>
             <div class="item-actions">
-                <TabIcon size="small" icon="黑色-添加" title="添加" @mousedown.prevent @click="submitNewTodo"/>
+                <TabIcon size="small" :icon="actionIcon('添加')" title="添加" @mousedown.prevent @click="submitNewTodo"/>
             </div>
         </div>
     </div>
@@ -132,6 +135,12 @@ const newTodoContent = ref('')
 const addInputRef = ref<HTMLDivElement>()
 
 const isEditable = computed(() => !props.readonly && !projectStore.isHideContent)
+
+// 浅色底用黑色图标，暗黑模式用白色图标
+type TodoActionIcon = '复制' | '编辑' | '删除' | '添加'
+function actionIcon(name: TodoActionIcon) {
+    return projectStore.isDarkMode ? name : `黑色-${name}`
+}
 
 function isItemEditing(item: TodoEntity) {
     return isEditable.value && editingItemId.value === item.id

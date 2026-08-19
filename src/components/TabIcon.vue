@@ -241,23 +241,26 @@ $icon-padding-mobile: 3px;
     .icon-btn{
         &:hover{
             img{
-                background-color: color.adjust($dark-bg, $lightness: 2%);
+                // 暗黑模式下提升悬停底色对比度，避免反馈不明显
+                background-color: color.adjust($dark-bg, $lightness: 8%);
             }
         }
         &:active{
             img{
-                background-color: color.adjust($dark-bg, $lightness: 6%);
+                // active 再提高一档亮度，形成清晰按压层级
+                background-color: color.adjust($dark-bg, $lightness: 14%);
             }
         }
         &.black{
             &:hover{
                 img{
-                    background-color: color.adjust($dark-bg, $lightness: 8%);
+                    // 黑色图标在暗黑底同样需要更强 hover 反馈
+                    background-color: color.adjust($dark-bg, $lightness: 12%);
                 }
             }
             &:active{
                 img{
-                    background-color: color.adjust($dark-bg, $lightness: 12%);
+                    background-color: color.adjust($dark-bg, $lightness: 18%);
                 }
             }
         }

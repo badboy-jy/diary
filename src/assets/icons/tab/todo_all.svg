@@ -2,10 +2,10 @@
 <svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>tab /todo_all</title>
     <g id="tab-/todo_all" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle-Copy-2" stroke="#E5E5EA" stroke-width="2" transform="translate(23.500000, 21.500000) scale(-1, 1) translate(-23.500000, -21.500000) " x="11" y="9" width="25" height="25"></rect>
-        <rect id="Rectangle-Copy-2" stroke="#E5E5EA" stroke-width="2" transform="translate(18.500000, 16.500000) scale(-1, 1) translate(-18.500000, -16.500000) " x="16" y="14" width="5" height="5"></rect>
-        <polyline id="Path-10" stroke="#49C75F" stroke-width="2" points="15.4894615 24.8448748 17.7285062 27.0839195 21.7285062 23.0839195"></polyline>
-        <line x1="24.5" y1="16.5" x2="31.5" y2="16.5" id="Line-4" stroke="#E5E5EA" stroke-width="2" stroke-linecap="square"></line>
-        <line x1="24.5" y1="26.5" x2="31.5" y2="26.5" id="Line-4-Copy" stroke="#49C75F" stroke-width="2" stroke-linecap="square"></line>
+        <path d="M36,9 L9,9 L9,36 L36,36 L36,9 Z M34,11 L34,34 L11,34 L11,11 L34,11 Z" id="Rectangle-Copy-2" fill="#E5E5EA" fill-rule="nonzero" transform="translate(22.500000, 22.500000) scale(-1, 1) translate(-22.500000, -22.500000) "></path>
+        <path d="M21,14 L14,14 L14,21 L21,21 L21,14 Z M19,16 L19,19 L16,19 L16,16 L19,16 Z" id="Rectangle-Copy-2" fill="#E5E5EA" fill-rule="nonzero" transform="translate(17.500000, 17.500000) scale(-1, 1) translate(-17.500000, -17.500000) "></path>
+        <polygon id="Path-10" fill="#49C75F" fill-rule="nonzero" points="20.0213994 24.3768127 21.435613 25.7910263 16.7285062 30.4981331 13.7823547 27.5519816 15.1965683 26.137768 16.728 27.669"></polygon>
+        <polygon id="Line-4" fill="#E5E5EA" fill-rule="nonzero" points="32 17 32 19 23 19 23 17"></polygon>
+        <polygon id="Line-4-Copy" fill="#49C75F" fill-rule="nonzero" points="32 27 32 29 23 29 23 27"></polygon>
     </g>
 </svg>
